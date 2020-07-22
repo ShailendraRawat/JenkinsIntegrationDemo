@@ -1,5 +1,17 @@
 pipeline {
 	agent any
+
+	options {
+		// Job timeout
+		timeout(time: 5, unit: 'MINUTES')
+		// Add timestamps to console output
+		timestamps()
+		// Disable multiple builds at a time for same branch/job
+		disableConcurrentBuilds()
+		// Only keep 60 builds
+		buildDiscarder(logRotator(numToKeepStr: '60'))
+	}
+	agent any
 	stages {
 		stage ('dev') {
 			sh "this is dev branch building"
