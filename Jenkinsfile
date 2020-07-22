@@ -29,7 +29,7 @@ pipeline {
            when { branch 'dev' }
             steps{
             script {
-                win32BuildBadge.setStatus('running')
+                win32BuildBadge.setStatus('failing')
                 try {
                     win32BuildBadge.setStatus('passing')
                 } catch (Exception err) {
