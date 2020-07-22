@@ -70,13 +70,12 @@ def isPRMergeBuild() {
 }
 
 
-void setBuildStatus(String message, String state) {
+void setBuildStatus(context, message, state) {
   step([
       $class: "GitHubCommitStatusSetter",
-	  commitShaSource: [$class: "ManuallyEnteredShaSource", sha: env.GIT_COMMIT],
-	reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/${getRepoSlug()}"],
-      contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
+      contextSource: [$class: "ManuallyEnteredCommitContextSource", context: context],
       errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+      reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/${getRepoSlug()}"],
       statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
   ]);
 }
