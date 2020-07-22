@@ -14,7 +14,6 @@ pipeline {
 	stages {
 
         checkout();
-        }
 
 
 		stage ('dev') {
