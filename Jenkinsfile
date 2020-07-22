@@ -29,8 +29,7 @@ pipeline {
            when { branch 'dev' }
             steps{
             sh '''
-            echo "hello world"
-            
+            echo "hello world"            
             '''
             }
 			
