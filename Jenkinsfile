@@ -30,7 +30,6 @@ pipeline {
            when { branch 'dev' }
             steps{
             sh '''
-            #!/bin/sh
             echo "hello world"
             
             '''
