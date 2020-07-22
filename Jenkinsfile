@@ -29,7 +29,7 @@ pipeline {
 		stage ('dev') {
            when { branch 'dev' }
             steps{
-            sh "is dev branch building"
+            sh '''is dev branch building'''
             }
 			
 		}
