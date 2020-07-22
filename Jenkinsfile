@@ -13,18 +13,43 @@ pipeline {
 	}
 	agent any
 	stages {
+
+        stage('checkout'){
+            steps {
+				echo 'Checkout code...'
+				echo 'current branch name'
+				echo "${env.JOB_NAME}"
+				//tokens = "${env.JOB_NAME}".tokenize('/')
+    			//branch = tokens[tokens.size()-1]
+				//print(branch)
+				checkout scm
+			}
+        }
+
+
 		stage ('dev') {
-			sh "this is dev branch building"
+            steps{
+            sh "this is dev branch building"
+            }
+			
 		}
 		stage ('stage') {
-			sh "this is stage branch building"
+            steps{
+            sh "this is stage branch building"
+            }
+			
 		}
 		stage ('master') {
-			sh "this is master branch building"
+
+             steps{
+            sh "this is master branch building"
+            }
+			
 		}
 	}
-    always {
-            echo 'always run post run'
+    post {
+        always {
+            cleanWs()
         }
         success {
             echo 'post action as successful'
@@ -32,4 +57,9 @@ pipeline {
         failure {
             echo 'post action as failed'
         }
+
+
+
+    }
+    
 }
