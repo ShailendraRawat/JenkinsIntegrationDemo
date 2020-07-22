@@ -14,12 +14,10 @@ pipeline {
 	stages {
     stage('checkout'){
         steps{
-            step{
-    context="continuous-integration/jenkins/"
-    context += isPRMergeBuild()?"pr-merge/checkout":"branch/checkout"
-    checkout scm
-    setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS')
-    }
+    context="continuous-integration/jenkins/";
+    context += isPRMergeBuild()?"pr-merge/checkout":"branch/checkout";
+    checkout scm;
+    setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS');
         }
     }
         
