@@ -20,7 +20,7 @@ pipeline {
     checkout scm;
     setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS');
     }
-        }
+    }
     }
         
 
