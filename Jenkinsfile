@@ -31,7 +31,7 @@ pipeline {
             script {
                 win32BuildBadge.setStatus('failing')
                 try {
-                    win32BuildBadge.setStatus('passing')
+                    win32BuildBadge.setStatus('failing')
                 } catch (Exception err) {
                     win32BuildBadge.setStatus('failing')
 
