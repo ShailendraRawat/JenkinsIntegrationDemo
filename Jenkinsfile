@@ -12,8 +12,12 @@ pipeline {
 		buildDiscarder(logRotator(numToKeepStr: '60'))
 	}
 	stages {
-
-        checkout();
+    stage('checkout'){
+        steps{
+            checkout();
+        }
+    }
+        
 
 
 		stage ('dev') {
@@ -58,14 +62,10 @@ pipeline {
     
 }
 def checkout() {
-    stage ('Checkout code'){
-    steps{
     context="continuous-integration/jenkins/"
     context += isPRMergeBuild()?"pr-merge/checkout":"branch/checkout"
     checkout scm
     setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS')
-    }
-    }
 }
 def isPRMergeBuild() {
     return (env.BRANCH_NAME ==~ /^PR-\d+$/)
