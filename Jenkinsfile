@@ -29,7 +29,11 @@ pipeline {
 		stage ('dev') {
            when { branch 'dev' }
             steps{
-            sh '''is dev branch building'''
+            sh '''
+            #!/bin/sh
+            echo "hello world'
+            
+            '''
             }
 			
 		}
