@@ -11,7 +11,6 @@ pipeline {
 		// Only keep 60 builds
 		buildDiscarder(logRotator(numToKeepStr: '60'))
 	}
-	agent any
 	stages {
 
         stage('checkout'){
