@@ -31,7 +31,7 @@ pipeline {
             steps{
             sh '''
             #!/bin/sh
-            echo "hello world'
+            echo "hello world"
             
             '''
             }
