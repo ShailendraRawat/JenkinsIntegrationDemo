@@ -13,16 +13,7 @@ pipeline {
 	}
 	stages {
 
-        stage('checkout'){
-            steps {
-				echo 'Checkout code...'
-				echo 'current branch name'
-				echo "${env.JOB_NAME}"
-				//tokens = "${env.JOB_NAME}".tokenize('/')
-    			//branch = tokens[tokens.size()-1]
-				//print(branch)
-				checkout scm
-			}
+        checkout();
         }
 
 
@@ -67,3 +58,40 @@ pipeline {
     }
     
 }
+def checkout() {
+    stage 'Checkout code'
+    context="continuous-integration/jenkins/"
+    context += isPRMergeBuild()?"pr-merge/checkout":"branch/checkout"
+    checkout scm
+    setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS')
+}
+def isPRMergeBuild() {
+    return (env.BRANCH_NAME ==~ /^PR-\d+$/)
+}
+
+
+void setBuildStatus(String message, String state) {
+  step([
+      $class: "GitHubCommitStatusSetter",
+	  commitShaSource: [$class: "ManuallyEnteredShaSource", sha: env.GIT_COMMIT],
+	reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/${getRepoSlug()}"],
+      contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
+      errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+      statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+  ]);
+}
+
+
+def getRepoSlug() {
+    tokens = "${env.JOB_NAME}".tokenize('/')
+    org = tokens[tokens.size()-3]
+    repo = tokens[tokens.size()-2]
+    return "${org}/${repo}"
+}
+
+def getBranch() {
+    tokens = "${env.JOB_NAME}".tokenize('/')
+    branch = tokens[tokens.size()-1]
+    return "${branch}"
+}
+
