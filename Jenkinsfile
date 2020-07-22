@@ -46,7 +46,7 @@ pipeline {
 
                     error 'Build failed'
                 }
-            '''
+            }
             }
 			
 		}
