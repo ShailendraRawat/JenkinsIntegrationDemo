@@ -1,3 +1,4 @@
+def win32BuildBadge = addEmbeddableBadgeConfiguration(id: "win32build", subject: "Windows Build")
 pipeline {
 	agent any
 
@@ -27,12 +28,29 @@ pipeline {
 		stage ('dev') {
            when { branch 'dev' }
             steps{
-            sh '''
-            echo "hello world2" 
+            script {
+                win32BuildBadge.setStatus('running')
+                try {
+                    RunBuild()
+                    win32BuildBadge.setStatus('passing')
+                } catch (Exception err) {
+                    win32BuildBadge.setStatus('failing')
+
+                    /* Note: If you do not set the color
+                             the configuration uses the best status-matching color.
+                             passing -> brightgreen
+                             failing -> red 
+                             ...
+                    */
+                    win32BuildBadge.setColor('pink')
+
+                    error 'Build failed'
+                }
             '''
             }
 			
 		}
+        
 		stage ('stage') {
             when { branch 'stage' }
             steps{
