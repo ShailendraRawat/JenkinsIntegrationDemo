@@ -27,19 +27,21 @@ pipeline {
 
 
 		stage ('dev') {
+           when { branch 'dev' }
             steps{
-            sh "this is dev branch building"
+            sh ("this is dev branch building")
             }
 			
 		}
 		stage ('stage') {
+            when { branch 'stage' }
             steps{
             sh "this is stage branch building"
             }
 			
 		}
 		stage ('master') {
-
+            when { branch 'master' }
              steps{
             sh "this is master branch building"
             }
