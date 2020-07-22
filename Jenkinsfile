@@ -14,7 +14,7 @@ pipeline {
 	stages {
     stage('checkout'){
         steps{
-            script{
+    script{
     context="continuous-integration/jenkins/";
     context += isPRMergeBuild()?"pr-merge/checkout":"branch/checkout";
     checkout scm;
