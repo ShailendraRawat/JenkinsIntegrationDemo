@@ -33,7 +33,7 @@ pipeline {
         stage ('dev-build-with-tag') {
            when { tag 'dev-release-*' }
             steps{
-              echo "this is dev relase tag building";
+              echo "this is dev relase tag building---------";
 
             }
 			
