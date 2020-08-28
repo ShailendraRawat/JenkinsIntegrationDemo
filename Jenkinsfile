@@ -24,9 +24,7 @@ pipeline {
 		stage ('dev-build') {
            when { branch 'dev' }
             steps{
-            script {
-              sh "this is stage branch building"
-            }
+              sh "this is dev branch building"
             }
 			
 		}
