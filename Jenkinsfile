@@ -24,8 +24,8 @@ pipeline {
 		stage ('dev-build') {
            when { branch 'dev' }
             steps{
-              sh "this is dev branch building";
-              
+              echo "this is dev branch building";
+
             }
 			
 		}
@@ -33,14 +33,14 @@ pipeline {
 		stage ('stage-build') {
             when { branch 'stage' }
             steps{
-            sh "this is stage branch building"
+            echo "this is stage branch building"
             }
 			
 		}
 		stage ('prod-build') {
             when { branch 'prod' }
              steps{
-            sh "this is prod branch building"
+            echo "this is prod branch building"
             }
 			
 		}
