@@ -31,7 +31,7 @@ pipeline {
 		}
 
         stage ('pre release-build') {
-           when { branch 'release-*' }
+           when { branch 'dev-release-*' }
             steps{
               echo "this is release branch building";
 
