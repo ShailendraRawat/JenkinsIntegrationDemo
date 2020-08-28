@@ -1,4 +1,3 @@
-def win32BuildBadge = addEmbeddableBadgeConfiguration(id: "win32build", subject: "Windows Build")
 pipeline {
 	agent any
 
@@ -16,51 +15,33 @@ pipeline {
     stage('checkout'){
         steps{
     script{
-    context="continuous-integration/jenkins/";
-    context += isPRMergeBuild()?"pr-merge/checkout":"branch/checkout";
     checkout scm;
-    setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS');
     }
     }
     }
         
 
-		stage ('dev') {
+		stage ('dev-build') {
            when { branch 'dev' }
             steps{
             script {
-                win32BuildBadge.setStatus('failing')
-                try {
-                    win32BuildBadge.setStatus('failing')
-                } catch (Exception err) {
-                    win32BuildBadge.setStatus('failing')
-
-                    /* Note: If you do not set the color
-                             the configuration uses the best status-matching color.
-                             passing -> brightgreen
-                             failing -> red 
-                             ...
-                    */
-                    win32BuildBadge.setColor('pink')
-
-                    error 'Build failed'
-                }
+              sh "this is stage branch building"
             }
             }
 			
 		}
         
-		stage ('stage') {
+		stage ('stage-build') {
             when { branch 'stage' }
             steps{
             sh "this is stage branch building"
             }
 			
 		}
-		stage ('master') {
-            when { branch 'master' }
+		stage ('prod-build') {
+            when { branch 'prod' }
              steps{
-            sh "this is master branch building"
+            sh "this is prod branch building"
             }
 			
 		}
@@ -80,32 +61,8 @@ pipeline {
     
 }
 
-def isPRMergeBuild() {
-    return (env.BRANCH_NAME ==~ /^PR-\d+$/)
-}
 
 
-void setBuildStatus(context, message, state) {
-  step([
-      $class: "GitHubCommitStatusSetter",
-      contextSource: [$class: "ManuallyEnteredCommitContextSource", context: context],
-      errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
-      reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/${getRepoSlug()}"],
-      statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
-  ]);
-}
 
 
-def getRepoSlug() {
-    tokens = "${env.JOB_NAME}".tokenize('/')
-    org = tokens[tokens.size()-3]
-    repo = tokens[tokens.size()-2]
-    return "${org}/${repo}"
-}
-
-def getBranch() {
-    tokens = "${env.JOB_NAME}".tokenize('/')
-    branch = tokens[tokens.size()-1]
-    return "${branch}"
-}
 
