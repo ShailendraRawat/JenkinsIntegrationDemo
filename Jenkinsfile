@@ -30,6 +30,15 @@ pipeline {
 			
 		}
 
+        stage ('pre release-build') {
+           when { branch 'release-*' }
+            steps{
+              echo "this is release branch building";
+
+            }
+			
+		}
+
         stage ('dev-build-with-tag') {
            when { tag 'dev-release-*' }
             steps{
